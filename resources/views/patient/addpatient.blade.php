@@ -19,11 +19,13 @@
             @endif
 
 
+            {{-- {{ $document }} --}}
+
         </h2>
         <div class="container">
 
 
-            <form action="{{ route('insertPatient') }}" method="POST">
+            <form action="{{ route('insertPatient') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 @if ($edit == true)
@@ -75,6 +77,28 @@
 
 
 
+                    <div class="form-group col-md-6 mb-2">
+                        <label class="form-label">Uplaod Documents</label>
+                        <input type="file" class="form-control" name="files[]" id="file" multiple>
+                    </div>
+
+
+
+
+                    @if ($edit == true)
+                        @if ($patient->documents && !$patient->documents->isEmpty())
+                            <div class="row flex mt-4">
+                                @foreach ($patient->documents as $singledocument)
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="thumbnail">
+                                            <img src="{{ $singledocument->PatientDocumentLink }}"
+                                                style="height: 300%;width:50%">
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    @endif
 
 
 

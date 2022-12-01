@@ -9,8 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Patient extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $guarded = ['id'];
 
-    protected $fillable = [
-        'name','email','contact_no'
-    ];
+    public function documents()
+    {
+        return $this->hasMany(PatientDocument::class, 'patient_id');
+    }
 }
