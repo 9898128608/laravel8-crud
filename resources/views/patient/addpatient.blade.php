@@ -86,7 +86,7 @@
                             <option value="0">Select</option>
                             @if ($category && !$category->isEmpty())
                             @foreach ( $category as $categoryRow)
-                            <option value="{{ $categoryRow->id }}"  @if($categoryRow->id == $patient->category) selected @endif>{{ $categoryRow->title }}</option>
+                            <option value="{{ $categoryRow->id }}"  @if($edit == true && ($categoryRow->id == $patient->category)) selected @endif>{{ $categoryRow->title }}</option>
                             @endforeach
                           @endif
 
