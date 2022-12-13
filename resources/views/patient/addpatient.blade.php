@@ -75,6 +75,27 @@
 
                     </div>
 
+                    
+                    
+
+
+                    <div class="form-group col-md-6  mb-2">
+                        <label class="form-label">Category</label>
+                        <select class="form-control" name="category" id="category">
+
+                            <option value="0">Select</option>
+                            @if ($category && !$category->isEmpty())
+                            @foreach ( $category as $categoryRow)
+                            <option value="{{ $categoryRow->id }}">{{ $categoryRow->title }}</option>
+                            @endforeach
+                          @endif
+
+                        </select>
+
+                      
+                         
+                    </div>
+
 
 
                     <div class="form-group col-md-6 mb-2">
@@ -93,6 +114,7 @@
                                         <div class="thumbnail">
                                             <img src="{{ $singledocument->PatientDocumentLink }}"
                                                 style="height: 300%;width:50%">
+                                                <a href="javascript:void(0);" class="text-danger d-flex" data-id='{{$singledocument->id}}' id="delete_patient_document">Delete</a>
                                         </div>
                                     </div>
                                 @endforeach
