@@ -134,10 +134,10 @@
 
                     <div class="row mt-5">
                         <div class="col-sm-1">
-                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <button class="btn btn-outline-primary" type="submit">Submit</button>
                         </div>
                         <div class="col-sm-1">
-                            <a href="{{ route('listing') }}" class="btn btn-secondary btn-md">Back<a>
+                            <a href="{{ route('listing') }}" class="btn btn-outline-secondary btn-md">Back<a>
                         </div>
                     </div>
 

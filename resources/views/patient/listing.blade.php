@@ -21,9 +21,9 @@
             @endif
 
 
-            <a href="{{ route('addPatient') }}" class="btn btn-primary">Add New Patient<a> <br /><br />
+            <a href="{{ route('addPatient') }}" class="btn btn-outline-primary">Add New Patient<a> <br /><br />
                     <div class="row">
-                        <table id='empTable' class="table table-striped" style="width:100%">
+                        <table id='empTable' class="table" style="width:100%">
                             <thead>
                                 <tr>
                                     <td>S.no</td>
@@ -41,7 +41,13 @@
         $(document).ready(function() {
             $('#empTable').DataTable({
                 processing: true,
-                serverSide: true,
+                serverSide: true, 
+                "aoColumnDefs": [
+                    { "bSortable": false, "aTargets": [ 0, 1, 2, 3, 4 ] }, 
+                    { "bSearchable": false, "aTargets": [ 0, 1, 2, 3, 4 ] }
+                ],
+                sDom: 'Lfrtlip',
+                language: { search: "" },
                 ajax: "{{ route('getPatients') }}",
                 columns: [{
                         data: 'id'
