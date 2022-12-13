@@ -6,4 +6,4 @@ This is simple crud operation demo in laravel8
 2.change env file sitepath
 3.install composer
 4.run project sitepath/public/all-patients
-eg.http://localhost/product/laravel-crud/public/all-patients
+eg.http://localhost/product/laravel8-crud/public/all-patients
