@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\patient\CreatePatienRequest;
 use App\Models\Patient;
 use App\Models\PatientDocument;
+use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Patient\PatientDocumentRepository;
 use App\Repositories\Patient\PatientRepository;
 use Illuminate\Http\Request;
@@ -14,12 +15,17 @@ class PatientController extends Controller
 {
     protected $patientRepository;
     protected $patientdocumentRepository;
+    protected $categoryRepository;
+    
     function __construct(
         PatientRepository $patientRepository,
-        PatientDocumentRepository $patientdocumentRepository
+        PatientDocumentRepository $patientdocumentRepository,
+        CategoryRepository $categoryRepository
     ) {
         $this->patientRepository = $patientRepository;
         $this->patientdocumentRepository = $patientdocumentRepository;
+        $this->categoryRepository = $categoryRepository;
+
     }
 
     public function listing()
@@ -42,8 +48,10 @@ class PatientController extends Controller
         $search_arr = $request->get('search');
 
         $columnIndex = $columnIndex_arr[0]['column']; // Column index
-        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name 
+        //$columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $columnSortOrder = 'desc'; // asc or desc
+
         $searchValue = $search_arr['value']; // Search value
 
         // Total records
@@ -88,22 +96,27 @@ class PatientController extends Controller
     public function addPatient($id = null)
     {
         $patient = array();
+        $category_array = array();
         $edit = false;
 
         if ($id) {
             $edit = true;
             $params = array();
             $params['id'] = $id;
-            $params['with'] = ['documents'];
+            $params['with'] = ['documents']; 
             $patient = $this->patientRepository->getByParams($params);
-            // dd($patient);
+             
+            if (empty($patient)) {
 
-            // $params_document = array();
-            // $params_document['patient_id'] = $id;
-            // $patientdocument = $this->patientdocumentRepository->getByParams($params_document);
+                return redirect()->route('listing');
+            }
         }
 
-        return view('patient.addpatient')->with(['patient' => $patient, 'edit' => $edit]);
+        //$category_array['id'] = $id;
+        $categoryData = $this->categoryRepository->getByParams('select');
+        //dd($categoryData);
+         
+        return view('patient.addpatient')->with(['patient' => $patient, 'edit' => $edit, 'category' => $categoryData]);
     }
 
     public function insertPatient(CreatePatienRequest $request)
@@ -116,29 +129,27 @@ class PatientController extends Controller
         $params['contact_no'] = $request->input('contact_no');
         $patient = $this->patientRepository->save($params);
         // dd($patient->id);
+
+        if ($request->has('files')) {
+            $Documents = $request->file('files');
+            foreach ($Documents as $document) {
+                $uploadPath = config('custom.upload.patients.documents');
+                $name = getName($document);
+                $path = $uploadPath . '/' . $name;
+                $disk = getDisk();
+                Storage::disk($disk)->put($path, file_get_contents($document));
+
+                $params = array();
+                $params['patient_id'] =  $patient->id;
+                $params['name'] =  $name;
+                $params['path'] =  $path;
+                $patient_document = $this->patientdocumentRepository->save($params);
+            }
+        }
+
         if ($request->input('id') && $request->input('id') > 0) {
             return redirect()->route('listing')->with('status', 'Patient Updated successfully.');
         } else {
-
-
-            if ($request->has('files')) {
-                $Documents = $request->file('files');
-                foreach ($Documents as $document) {
-                    $uploadPath = config('custom.upload.patients.documents');
-                    $name = getName($document);
-                    $path = $uploadPath . '/' . $name;
-                    $disk = getDisk();
-                    Storage::disk($disk)->put($path, file_get_contents($document));
-
-                    $params = array();
-                    $params['patient_id'] =  $patient->id;
-                    $params['name'] =  $name;
-                    $params['path'] =  $path;
-                    $patient_document = $this->patientdocumentRepository->save($params);
-                }
-            }
-
-
             return redirect()->route('listing')->with('status', 'Patient Inserted successfully.');
         }
     }
@@ -146,6 +157,12 @@ class PatientController extends Controller
     public function destroyPatient($id)
     {
         $result = $this->patientRepository->delete($id);
+        return redirect()->route('listing')->with('status', 'Patient Delete successfully.');
+    }
+
+    public function deletePatientDocument($id)
+    {
+        $result = $this->patientdocumentRepository->delete($id);
         return redirect()->route('listing')->with('status', 'Patient Delete successfully.');
     }
 }
