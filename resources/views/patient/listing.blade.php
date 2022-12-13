@@ -26,11 +26,11 @@
                         <table id='empTable' class="table" style="width:100%">
                             <thead>
                                 <tr>
-                                    <td>S.no</td>
-                                    <td>Name</td>
-                                    <td>Email</td>
-                                    <td>ContactNo</td>
-                                    <td>Action</td>
+                                    <th>S.no</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Contact No</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </table>
