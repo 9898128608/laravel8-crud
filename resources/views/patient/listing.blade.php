@@ -30,6 +30,7 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Contact No</th>
+                                    <th>Category</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -43,8 +44,8 @@
                 processing: true,
                 serverSide: true, 
                 "aoColumnDefs": [
-                    { "bSortable": false, "aTargets": [ 0, 1, 2, 3, 4 ] }, 
-                    { "bSearchable": false, "aTargets": [ 0, 1, 2, 3, 4 ] }
+                    { "bSortable": false, "aTargets": [ 0, 1, 2, 3, 4, 5 ] }, 
+                    { "bSearchable": false, "aTargets": [ 0, 1, 2, 3, 4, 5 ] }
                 ],
                 sDom: 'Lfrtlip',
                 language: { search: "" },
@@ -60,6 +61,9 @@
                     },
                     {
                         data: 'contact_no'
+                    },
+                    {
+                        data: 'category'
                     },
                     {
                         data: 'action'

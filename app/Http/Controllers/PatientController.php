@@ -79,6 +79,7 @@ class PatientController extends Controller
                 "name" => $name,
                 "email" => $email,
                 "contact_no" => $contact_no,
+                "category" => null,
                 "action" => "<a href='" . route('addPatient', $id) . "'  class='btn btn-outline-primary'  >Edit</a>  <a href='" . route('destroyPatient', $id) . "' class='btn btn-outline-secondary' >Delete</a>"
             );
         }
