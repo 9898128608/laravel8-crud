@@ -28,7 +28,8 @@ class CreatePatienRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|email|unique:patients,email,'.$this->get('id'),
-            'contact_no' => 'required|numeric|digits:10'
+            'contact_no' => 'required|numeric|digits:10',
+            'category' => 'required|not_in:0'
         ];
     }
 
@@ -48,6 +49,7 @@ class CreatePatienRequest extends FormRequest
             'email.email' => 'Please enter a valid email address',
             'email.unique' => 'The email ID you entered already exist',
             'contact_no' => 'Contact No',
+            'category' => 'Category',
 
         ];
     }

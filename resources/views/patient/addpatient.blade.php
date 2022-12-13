@@ -35,7 +35,7 @@
 
                 <div class="row">
                     <div class="form-group col-md-6 mb-2">
-                        <label class="form-label">Name</label>
+                        <label class="form-label">Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="name" id="name"
                             value="@if ($edit == true) {{ $patient->name }} @endif">
 
@@ -49,7 +49,7 @@
 
                     </div>
                     <div class="form-group col-md-6  mb-2">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="email" id="email"
                             value="@if ($edit == true) {{ $patient->email }} @endif">
 
@@ -62,7 +62,7 @@
 
                     </div>
                     <div class="form-group col-md-6  mb-2">
-                        <label class="form-label">Contact No</label>
+                        <label class="form-label">Contact No <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="contact_no" id="contact_no"
                             value="@if ($edit == true) {{ $patient->contact_no }} @endif">
 
@@ -80,17 +80,23 @@
 
 
                     <div class="form-group col-md-6  mb-2">
-                        <label class="form-label">Category</label>
+                        <label class="form-label">Category <span class="text-danger">*</span></label>
                         <select class="form-control" name="category" id="category">
 
                             <option value="0">Select</option>
                             @if ($category && !$category->isEmpty())
                             @foreach ( $category as $categoryRow)
-                            <option value="{{ $categoryRow->id }}">{{ $categoryRow->title }}</option>
+                            <option value="{{ $categoryRow->id }}"  @if($categoryRow->id == $patient->category) selected @endif>{{ $categoryRow->title }}</option>
                             @endforeach
                           @endif
 
                         </select>
+
+                        @if ($errors->has('category'))
+                            <span class="invalid-feedback d-block">
+                                {{ $errors->first('category') }}
+                            </span>
+                        @endif
 
                       
                          

@@ -127,6 +127,7 @@ class PatientController extends Controller
         $params['name'] = $request->input('name');
         $params['email'] = $request->input('email');
         $params['contact_no'] = $request->input('contact_no');
+        $params['category'] = $request->input('category');
         $patient = $this->patientRepository->save($params);
         // dd($patient->id);
 
